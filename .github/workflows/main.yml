@@ -30,6 +30,7 @@ jobs:
       - name: Decode android/key.properties
         run: echo "${{ secrets.KEY_PROPERTIES_PROD }}" | base64 --decode > android/key.properties
       - run: flutter pub get
+      - run: flutter build apk --release --split-per-abi
       - run: flutter build appbundle --release
       - name: Push to Releases
         uses: ncipollo/release-action@v1.10.0
