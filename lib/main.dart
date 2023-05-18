@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'fade_scale_transition.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -226,12 +228,29 @@ class _ImageSearchPageState extends State<ImageSearchPage> {
                     return InkWell(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                FullScreen(imageUrl: imageUrl),
-                          ),
-                        );
+                            context,
+                            //MaterialPageRoute(
+                            //  builder: (context) =>
+                            //      FullScreen(imageUrl: imageUrl),
+                            //),
+                            PageRouteBuilder(
+                                transitionDuration: Duration(seconds: 2),
+                                transitionsBuilder: (BuildContext context,
+                                    Animation<double> animation,
+                                    Animation<double> secondaryAnimation,
+                                    Widget child) {
+                                  return FadeScaleTransition(
+                                    animation: animation,
+                                    child: child,
+                                  );
+                                },
+                                pageBuilder: (BuildContext context,
+                                    Animation<double> animation,
+                                    Animation<double> secondaryAnimation) {
+                                  return FullScreen(
+                                    imageUrl: imageUrl,
+                                  );
+                                }));
                       },
                       child: Image.network(imageUrl, fit: BoxFit.cover),
                     );
